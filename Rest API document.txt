@@ -1,0 +1,120 @@
+1 - pip install pipenv
+2 - pip install virtualenv
+3 - python -m virtualenv env
+4 - cd env
+5 - cd Scripts
+6 - activate
+7 - cd ..
+8 - cd ..
+9 - pip install django djangorestframework django-cors-headers
+10 - django-admin startproject mysite
+11 - cd mysite
+12 - django-admin startapp myapp
+13 - { python manage.py runserver } check whether server is running or not 
+14 - Now you have to open the TODO-APP folder in VSC then open the models.py for creating the models 
+
+{
+from django.db import models
+# Create your models here.
+class Moviesdata(models.Model):
+    def __str__(self) :
+        return self.moviename
+    id = models.AutoField(primary_key=True)
+    moviename = models.CharField(max_length=100)
+    heroname= models.CharField(max_length=100)
+}
+
+15 - Now you can open the settings.py you have to write the installed app means 'myapp' and 'rest_framework'
+{
+
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'myapp',
+]
+
+}
+
+
+16 - Now again you can open the cmd for migrations (Command is: python manage.py makemigrations)
+17 - Next command (Command is: python manage.py migrate)
+18 - Run the server (Command is: python manage.py runserver)
+19 - Create the superuser (Command is: python manage.py createsuperuser)
+        Username :  chandrakiran
+        Email address: ayyappagarichandrakiran2000@gmail.com
+        Password: Ackiran1999@
+20 - Now you can open the admin.py for Registering the models (from .models import Moviesdata) -> (admin.site.register(Moviesdata))
+        Successfully you can add the Moviesdata.
+
+{
+
+from django.contrib import admin
+from .models import Moviesdata
+# Register your models here.
+admin.site.register(Moviesdata)
+
+}
+
+21 - now create a serializers.py  file in myapp folder { eg :-  serializers.py } and add this below data
+{
+
+from rest_framework import serializers
+# from .models import * # it imports all
+from .models import Moviesdata
+
+class MoviesdataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Moviesdata
+        fields = '__all__'
+
+}
+
+22 - Add corsheaders to INSTALLED_APPS and configure middleware in settings.py.
+{
+
+INSTALLED_APPS = [
+    ...
+    'corsheaders',
+]
+
+MIDDLEWARE = [
+    ...
+    'corsheaders.middleware.CorsMiddleware',
+    ...
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+}
+
+23 - urls.py 
+{
+
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from myapp.views import MoviesdataViewSet
+
+router = DefaultRouter()
+router.register(r'movies', MoviesdataViewSet)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api', include(router.urls)),
+]
+
+}
+
+
+
+Frontend
+--------
+
+
+1 - install nodejs { url : https://nodejs.org/en }
+2 - npx create-react-app frontendreactjs
+3 - cd frontendreactjs
+4 - npm start
+
